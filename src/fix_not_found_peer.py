@@ -63,7 +63,11 @@ if __name__ == '__main__':
                     result = subprocess.check_output(split_cmd)
                     print("Got: %s" % (result,))
                 elif method == 'dockerapi':
+                    print("Finding Docker API...")
                     client = docker.from_env()
+                    print("Finding miner container...")
                     miner_container = client.containers.get("miner")
-                    result = miner_container.exec_run("miner peer refresh %s" % (peer,))
+                    cmd = "miner peer refresh %s" % (peer,)
+                    print("Execing %s..." % (cmd,))
+                    result = miner_container.exec_run(cmd)
                     print(result)
