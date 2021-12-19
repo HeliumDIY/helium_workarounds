@@ -4,6 +4,7 @@ import re
 import requests
 import subprocess
 import time
+import sys
 
 def follow(file, sleep_sec=0.1):
     """ Yield each line from a file as they are written.
@@ -30,7 +31,7 @@ if __name__ == '__main__':
             "Addr":None
         }
     }
-    with open("/home/pi/miner_data/log/console.log", 'r') as file:
+    with open(sys.argv[1], 'r') as file:
         file.seek(0, 2)
         for line in follow(file):
             m = re.match(r'.*failed to dial (?:challenger|proxy server) "(.*)":? not_found', line)
