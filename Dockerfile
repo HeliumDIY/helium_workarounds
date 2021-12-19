@@ -10,5 +10,6 @@ WORKDIR /app
 RUN mkdir /log
 
 VOLUME ["/log"]
+ENV LOG_FILE /log/console.log
 
-CMD ["python3", "fix_not_found_peer.py", "/log/console.log"]
+CMD ["python3", "fix_not_found_peer.py"]
