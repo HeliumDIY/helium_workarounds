@@ -56,14 +56,22 @@ if __name__ == '__main__':
     log_file = os.getenv("LOG_FILE")
     if not log_file:
         log_file = sys.argv[1]
+    log_only_failed = (os.getenv('LOG_ONLY_FAILED', 'False') == 'True')
+    if not log_only_failed:
+        log_only_failed = False
+        print("Logging everything")
+    else:
+        print("Logging only failed to dial events")
 
     print("Tailing file: %s" % (log_file,))
     for line in follow(log_file):
         m = re.match(r'.*failed to dial (?:challenger|proxy server) "(.*)":? not_found', line)
-        print(line, end='')
+        if not log_only_failed:
+            print(line, end='')
         if m is not None:
             peer = m.group(1)
-
+            if log_only_failed:
+                print(line, end='')
             if method == 'jsonrpc':
                 json_msg['params']['Addr'] = peer
                 print("Issuing request to miner to reload peer %s" % (peer,))
